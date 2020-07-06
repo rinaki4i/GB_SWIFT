@@ -63,9 +63,9 @@ print(range_digit)
 // Lesson 2. Ex. 5
 // Не понятно, как преодолеть ограничение в Int64.max и почему идет краш, если сделать х - отрицательным числом. И не очень понятно, почему не вышло обработать ошибку
 
-var cacheData = [Int64: Int64]()
+var cacheData = [Decimal: Decimal]()
 
-func fibNum(x:Int64) throws -> Int64{
+func fibNum(x:Decimal) -> Decimal{
     switch x {
     case 0,1:
         return x
@@ -73,29 +73,17 @@ func fibNum(x:Int64) throws -> Int64{
         if let fibValue = cacheData[x]{
             return fibValue
         }
-        
-//        let prev = cacheData[x - 1], prevPrev = cacheData[x - 2]
-//        if ( prev != nil && prevPrev != nil ){
-//            do {
-//                let fibValue = try (fibNum(x: x - 1) + fibNum(x: x - 2))
-//                cacheData[x] = fibValue
-//                return fibValue
-//            } catch {
-//                return Int64.max
-//            }
-//        }
-        let fibValue = try fibNum(x: x - 1) + fibNum(x: x - 2)
+        let fibValue = fibNum(x: x - 1) + fibNum(x: x - 2)
         cacheData[x] = fibValue
         return fibValue
         }
     }
 
-let x: Int64 = 10
+let x: Decimal = 45
 
-var fibArray = [Int64]()
-// не выходит дойти до 100 из-за проблем с INT64_MAX
-for i in x...x + 82{
-    fibArray.append(try fibNum(x: i))
+var fibArray = [Decimal]()
+for i in stride(from: x, through: x + 100, by: 1){
+    fibArray.append(fibNum(x: i))
 }
 print(fibArray)
 
