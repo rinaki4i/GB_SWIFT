@@ -60,21 +60,30 @@ struct  carsVariations{
             print("input error! Check value operations: \(operations)")
         }
     }
+    
     var operationsWithTrunk: trunkOperations {
         willSet {
             if newValue.caseName() == "load"{
+                let commonLoadSize = newValue.get() + operationsWithTrunk.get()
                 if trunkState == .empty && newValue.get() <= trunkVolume {
-                    changeTrunk(operations: newValue.caseName(), newValue: newValue.get(), oldValue: <#T##Double#>, maxSize: trunkVolume)
-                    print("В багажник загружено \(newValue.get()) литров")
-                }else if newValue.get() > trunkVolume {
-                    print("Нельзя загрузить в багажник вещей (\(newValue.get())) больше предельного объема \(trunkVolume)!")
+                    changeTrunk(operations: newValue.caseName(), newValue: newValue.get(), oldValue: operationsWithTrunk.get(), maxSize: trunkVolume)
+                    print("В багажник \(brand) \(model) загружено \(newValue.get()) литров, общий размер: \(commonLoadSize)")
+                }else if (newValue.get() + operationsWithTrunk.get()) > trunkVolume {
+                    print("Нельзя загрузить в багажник \(brand) \(model) объектов (\(commonLoadSize)) больше предельного объема \(trunkVolume)!")
                 }
             }
             if newValue.caseName() == "unload"{
-                print(trunkVolume - newValue.get())
+                if trunkState == .full && newValue.get() <= trunkVolume {
+                    let commonUnloadSize = trunkVolume - newValue.get()
+                    changeTrunk(operations: newValue.caseName(), newValue: newValue.get(), oldValue: operationsWithTrunk.get(), maxSize: trunkVolume)
+                    print("Из багажника \(brand) \(model) выгружено \(newValue.get()) литров, общий размер в остатке: \(commonUnloadSize)")
+                }else if trunkState == .empty {
+                    print("Нельзя ничего выгрузить из \(brand) \(model) - багажник пустой!")
+                }
+                }
             }
         }
-    }
+    
     var trunkState: trunk {
      willSet {
         if newValue == .full {
@@ -111,15 +120,25 @@ struct  carsVariations{
 
 var car1 = carsVariations(brand: "Ford", model: "Mustang Shelby", year: 2017, color: .black, trunkVolume: 382.0, operationsWithTrunk: .load(cargoSize: 40), trunkState: .empty, engineState: .off, windowsState: .closed)
 var car2 = carsVariations(brand: "Jaguar", model: "E-Pace", year: 2020, color: .red, trunkVolume: 332.0, operationsWithTrunk: .unload(cargoSize: 50), trunkState: .full, engineState: .off, windowsState: .opened)
+var truck1 = carsVariations(brand: "BelAZ", model: "75570", year: 2015, color: .orange, trunkVolume: 90000.0, operationsWithTrunk: .load(cargoSize: 40000), trunkState: .empty, engineState: .on, windowsState: .closed)
+var truck2 = carsVariations(brand: "Hitachi", model: "EH5000AC-3", year: 2013, color: .red, trunkVolume: 326000.0, operationsWithTrunk: .unload(cargoSize: 50000), trunkState: .full, engineState: .off, windowsState: .opened)
 
 
 car1.color = .purple
 car2.color
-car1.operationsWithTrunk = .load(cargoSize: 70)
-car1.operationsWithTrunk = .load(cargoSize: 99)
-car1.trunkVolume = 382
+car1.operationsWithTrunk = .load(cargoSize: 150)
+car2.operationsWithTrunk = .unload(cargoSize: 170)
+car2.operationsWithTrunk = .load(cargoSize: 250)
+truck1.operationsWithTrunk = .load(cargoSize: 150)
+truck2.operationsWithTrunk = .unload(cargoSize: 156000)
+truck1.operationsWithTrunk = .load(cargoSize: 7000000)
+car1.trunkVolume
 car2.trunkVolume
 car1.windowsState
 car2.windowsState = .closed
 car2.windowsState
-
+truck2.trunkVolume
+truck1.trunkVolume
+truck1.windowsState
+truck2.windowsState = .closed
+truck2.windowsState
