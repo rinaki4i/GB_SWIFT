@@ -114,12 +114,12 @@ var car2 = carsVariations(brand: "Jaguar", model: "E-Pace", year: 2020, color: .
 
 
 car1.color = .purple
-car2.color
+car2.color =.green
 car1.operationsWithTrunk = .load(cargoSize: 70)
 car1.operationsWithTrunk = .load(cargoSize: 99)
-car1.trunkVolume = 382
-car2.trunkVolume
-car1.windowsState
+car1.trunkVolume = 260.0
+car2.trunkVolume = 800.0
+car1.windowsState = .opened
 car2.windowsState = .closed
-car2.windowsState
+car2.
 
