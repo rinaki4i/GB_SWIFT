@@ -1,0 +1,12 @@
+
+/* Class = "UIButton"; normalTitle = "Registration"; ObjectID = "LS6-Sq-VVC"; */
+"LS6-Sq-VVC.normalTitle" = "Registration";
+
+/* Class = "UILabel"; text = "Agent"; ObjectID = "Qa0-2P-acW"; */
+"Qa0-2P-acW.text" = "Agent";
+
+/* Class = "UILabel"; text = "Login"; ObjectID = "m3I-yC-Vmf"; */
+"m3I-yC-Vmf.text" = "Login";
+
+/* Class = "UILabel"; text = "Password"; ObjectID = "vqz-Xf-fc8"; */
+"vqz-Xf-fc8.text" = "Password";
