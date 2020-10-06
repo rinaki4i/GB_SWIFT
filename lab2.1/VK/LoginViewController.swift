@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var loginTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -20,8 +20,9 @@ class LoginViewController: UIViewController {
         let hideKeyboardGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         // Присваиваем его UIScrollVIew
         scrollView?.addGestureRecognizer(hideKeyboardGesture)
+        
     }
-      @objc func keyboardWasShown(notification: Notification) {
+       @objc func keyboardWasShown(notification: Notification) {
         
         // Получаем размер клавиатуры
         let info = notification.userInfo! as NSDictionary
@@ -58,13 +59,22 @@ class LoginViewController: UIViewController {
         self.scrollView?.endEditing(true)
     }
     
-    @IBAction func registrationButton(_ sender: Any) {
-        if loginTextField.text == "admin" &&
-            passwordTextField.text == "123456"{
-        print("You are able to login")
-    } else {
-    print("Not able to login")
+    @IBAction func registrationButton(_ sender: Any) {}
+    
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        let login = loginTextField.text!
+        let password = passwordTextField.text!
+
+        if login == "admin" && password == "123456" {
+            return true
+        } else {
+            let alert = UIAlertController(title: "Ошибка", message: "Введены неверные данные пользователя", preferredStyle: .alert)
+            let action = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alert.addAction(action)
+            present(alert, animated: true, completion: nil)
+
+            return false
         }
-}
+    }
 }
 
